@@ -98,16 +98,6 @@ data "aws_ami" "ubuntu" {
   owners = ["099720109477"] # Canonical
 }
 
-resource "aws_eip" "diamond_dogs" {
-  instance = aws_instance.diamond_dogs.id
-  vpc      = true
-}
-
-resource "aws_eip_association" "diamond_dogs" {
-  instance_id   = aws_instance.diamond_dogs.id
-  allocation_id = aws_eip.diamond_dogs.id
-}
-
 resource "aws_instance" "diamond_dogs" {
   ami                         = data.aws_ami.ubuntu.id
   instance_type               = var.instance_type
@@ -115,6 +105,7 @@ resource "aws_instance" "diamond_dogs" {
   subnet_id                   = aws_subnet.diamond_dogs.id
   vpc_security_group_ids      = [aws_security_group.diamond_dogs.id]
 
+  user_data_replace_on_change = true
   user_data = templatefile("${path.module}/files/deploy_app.sh", {
     placeholder = var.placeholder
     width       = var.width
@@ -125,4 +116,13 @@ resource "aws_instance" "diamond_dogs" {
   tags = {
     Name = "${var.prefix}-diamond_dogs-instance"
   }
+}
+
+resource "aws_eip" "diamond_dogs" {
+  instance = aws_instance.diamond_dogs.id
+}
+
+resource "aws_eip_association" "diamond_dogs" {
+  instance_id   = aws_instance.diamond_dogs.id
+  allocation_id = aws_eip.diamond_dogs.id
 }
