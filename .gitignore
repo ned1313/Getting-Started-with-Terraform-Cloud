@@ -31,3 +31,4 @@ override.tf.json
 # Ignore diamond dogs and space coyote folders
 diamond-dogs-app/*
 space-coyote-app/*
+policy_testing/*

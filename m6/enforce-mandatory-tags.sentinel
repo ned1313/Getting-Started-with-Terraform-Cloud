@@ -1,0 +1,39 @@
+# Enforcing Mandatory Tags for aws ec2 instances
+
+# This Policy uses tfplan/v2 as the data source
+import "tfplan/v2" as tfplan
+
+# The list of mandatory tags
+param mandatory_tags default ["Environment","Billing"]
+
+print("Checking for mandatory tags:", mandatory_tags)
+
+# Filtering all of 'aws_instance' resources from the plan file
+ec2_instances = filter tfplan.resource_changes as _, resource {
+	resource.mode == "managed" and
+		resource.type == "aws_instance" and
+		(resource.change.actions contains "create" or resource.change.actions == ["update"])
+}
+
+# Verify each instance has the mandatory tags
+deny_resources_without_mandatory_tags = func(required_tags, instances) {
+	validated = true
+	
+	for instances as address, r {
+		for required_tags as mtag {
+			if r.change.after.tags_all not contains mtag {
+				print("Resource", address, "is missing the mandatory tag", mtag)
+				validated = false
+			}
+		}
+	}
+
+	return validated
+}
+
+
+
+# Main Policy
+main = rule {
+	deny_resources_without_mandatory_tags(mandatory_tags, ec2_instances)
+}
