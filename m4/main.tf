@@ -58,6 +58,10 @@ resource "aws_security_group" "diamond_dogs" {
   tags = {
     Name = "${var.prefix}-security-group"
   }
+
+  lifecycle {
+    create_before_destroy = true
+  }
 }
 
 resource "aws_internet_gateway" "diamond_dogs" {
