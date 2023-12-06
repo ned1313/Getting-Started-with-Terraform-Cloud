@@ -8,8 +8,8 @@ terraform {
 }
 
 data "tfe_outputs" "diamond_dogs" {
-  organization = "globomantics-tfc"
-  workspace = "diamonddogs-app-useast1-dev"
+  organization = "YOUR_ORGANIZATION"
+  workspace = "DIAMOND_DOGS_WORKSPACE_NAME"
 }
 
 output "diamond_dogs_url" {
