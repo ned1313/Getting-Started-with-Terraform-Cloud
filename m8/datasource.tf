@@ -9,7 +9,7 @@ terraform {
 
 data "tfe_outputs" "diamond_dogs" {
   organization = "YOUR_ORGANIZATION"
-  workspace = "DIAMOND_DOGS_WORKSPACE_NAME"
+  workspace    = "DIAMOND_DOGS_WORKSPACE_NAME"
 }
 
 output "diamond_dogs_url" {
