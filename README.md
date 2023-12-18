@@ -1,5 +1,7 @@
 # Getting-Started-with-Terraform-Cloud
 
+**NOTE: THESE ARE THE EXERCISE FILES FOR THE VERSION OF THE COURSE PUBLISHED IN 2021. EXERCISE FILES FOR THE CURRENT VERSION CAN BE FOUND ON THE MAIN BRANCH**
+
 Exercise files to go with my Pluralsight course [Getting Started with Terraform Cloud](http://www.pluralsight.com/courses/terraform-cloud-getting-started).
 
 ## Course Description
