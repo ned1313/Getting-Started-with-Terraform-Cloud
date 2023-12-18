@@ -8,20 +8,11 @@ While migrating Team Space Coyote, you found some useful modules you'd like to m
 - Create a module with the private registry
 - Update the Space Coyote configuration
 
-
 ### Add public modules and providers to the registry
 
 Click on the "Registry" tab at the top of the page. From the providers tab, click on "Search public registry" button. Search for the AWS provider and add it to the registry.
 
 Click on the modules tab, and click on "Search public registry". Search for the `s3-bucket` module. Add the module to the private registry.
-
-### Add the private networking module to the registry
-
-
-
-On the VCS connection is complete, click on the "Registry" tab at the top of the page. "Publish" button followed by "Module". Click on the "GitHub" button and select the terraform-aws-s3-bucket repository that you just forked.
-
-
 
 ### Add private networking module to the registry
 

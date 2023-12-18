@@ -8,15 +8,14 @@ variable "project" {
   description = "(Required) Application project name."
 }
 
-variable "billable" {
-  type = string
-  description = "(Required) Billable code for project."
+variable "billing" {
+  type        = string
+  description = "(Required) Billing code for project."
 }
 
 variable "environment" {
   type        = string
-  description = "(Optional) Application environment for deployment, defaults to development."
-  default     = "development"
+  description = "(Required) Application environment for deployment."
 }
 
 variable "region" {
@@ -40,5 +39,5 @@ variable "subnet_prefix" {
 variable "instance_type" {
   type        = string
   description = "(Optional) Specifies the AWS instance type. Defaults to t2.micro."
-  default     = "t2.micro"
+  default     = "t3.micro"
 }

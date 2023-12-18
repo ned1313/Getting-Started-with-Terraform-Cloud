@@ -14,7 +14,7 @@ provider "aws" {
       Owner       = "Globomantics"
       Project     = var.project
       Environment = var.environment
-      Billable = var.billable
+      Billing     = var.billing
     }
   }
 }
@@ -30,8 +30,8 @@ module "networking" {
 
 module "s3_bucket" {
   source        = "terraform-aws-modules/s3-bucket/aws"
+  version       = "3.15.1"
   bucket_prefix = "${var.prefix}-${var.environment}"
-  acl           = "private"
 
   versioning = {
     enabled = true
@@ -68,6 +68,10 @@ resource "aws_security_group" "space_coyote" {
   tags = {
     Name = "${var.prefix}-security-group"
   }
+
+  lifecycle {
+    create_before_destroy = true
+  }
 }
 
 
@@ -89,7 +93,6 @@ data "aws_ami" "ubuntu" {
 
 resource "aws_eip" "space_coyote" {
   instance = aws_instance.space_coyote.id
-  vpc      = true
 }
 
 resource "aws_eip_association" "space_coyote" {

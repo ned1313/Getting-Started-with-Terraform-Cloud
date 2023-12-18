@@ -10,6 +10,8 @@ Team Space Coyote is ready to migrate their application to Terraform Cloud. You 
 
 ### Create the Space Coyote deployment to test migration
 
+First copy the `space_coyote` directory from the `m8` directory to a new directory named `space-coyote-app`. This will be the directory we use for the rest of the course.
+
 Deploy the Space Coyote application by initializing terraform, validating the code and executing an apply.
 
 ```bash
@@ -39,7 +41,7 @@ terraform {
     organization = "YOURORGANIZATION"
 
     workspaces {
-      tags = ["team:spacecoyote","apps"]
+      tags = ["spacecoyote","apps"]
     }
   }
 }
@@ -49,9 +51,9 @@ Validate the code is correct with a `terraform validate`
 
 ## Update and migrate the Space Coyote deployment
 
-Begin the migration to Terraform Cloud by issuing a `terraform init` and proceeding to answer the migration questions presented. The new workspace name should be `spacecoyote-aws-useast1-dev`.
+Begin the migration to Terraform Cloud by issuing a `terraform init` and proceeding to answer the migration questions presented. The new workspace name should be `spacecoyote-app-useast1-dev`.
 
-After migration you should see a new state file on the "States" tab of your `spacecoyote-aws-useast1-dev` Terraform Cloud workspace.
+After migration you should see a new state file on the "States" tab of your `spacecoyote-app-useast1-dev` Terraform Cloud workspace.
 
 You can confirm that the output of a `terraform show` matches the output of the same command before the migration. Once the migration is complete delete the local terraform.tfstate file by running `rm terraform.tfstate`.
 
@@ -63,7 +65,7 @@ Within Terraform Cloud create the required variables for the Space Coyote applic
 prefix      = "sc"
 project     = "space_coyote"
 environment = "development"
-billable    = "314159"
+billing    = "314159"
 ```
 
 Next, update the variable set from the previous modules to allow the new workspace access.
@@ -78,32 +80,11 @@ Congratulations!!!  Now all future changes to Terraform will be executed against
 
 Now that both the Diamond Dogs and Space Coyote state is stored within Terraform Cloud, the Space Coyote team has decided that they would like to include a link to the Diamond Dog's application.  How can they do this in an automated fashion?
 
-They can use both the `terraform_remote_state` data source and Terraform Cloud Run Triggers.
-
-#### `terraform_remote_state`
-
-The `terraform_remote_state` data source retrieves the root module output values from some other Terraform configuration.  In this case we will add code to the Space Coyote terraform configuration to pull the Diamand dog's application url by including the following item within their `main.tf`
-
-```hcl
-data "terraform_remote_state" "diamond_dogs_dev" {
-  backend = "remote"
-
-  config = {
-    organization = "<OUR ORGANIZATION>"
-    workspaces = {
-      name = "diamonddogs-app-useast1-dev"
-    }
-  }
-}
-
-output "diamond_dogs_dev_url" {
-  value = "If you like this application, check out other Globomantics applications.  The Diamond Dogs have struck again - ${data.terraform_remote_state.diamond_dogs_dev.outputs.diamond_dogs_url}"
-}
-```
+They can use both the `tfe_outputs` data source and Terraform Cloud Run Triggers.
 
 ### Allow state access for SC
 
-We are going to be pulling information from the Diamond Dogs state data through the `terraform_remote_state` data source. Before we trigger a run with our updated configuration, we need to grant the Space Coyote workspace access to the Diamond Dogs dev state data.
+We are going to be pulling information from the Diamond Dogs outputs through the `tfe_outputs` data source. Before we trigger a run with our updated configuration, we need to grant the Space Coyote workspace access to the Diamond Dogs dev outputs.
 
 In the General settings of the Diamond Dogs development workspace, update the **Remote state sharing** setting to share the remote state with the Space Coyote development workspace and click on save settings.
 
@@ -118,4 +99,3 @@ Select the `Settings` of the Space Coyote dev workspace and choose `Run Triggers
 To see this in action, change the billable value in the variables, and trigger a Terraform run in the Diamond Dogs dev workspace and then notice that after the apply is complete an automatic run will be triggered inside the Space Coyote dev workspace.  You can view the metadata of this run within the Space Coyote workspace and validate that the run was trigger from the source workspace.
 
 This will ensure that the Diamond Dog's url output is always up to date within the Space Coyote message because it will pull the remote state of that workspace anytime there is a change in the Diamond Dog's workspace.
-

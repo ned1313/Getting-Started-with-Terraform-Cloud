@@ -1,6 +1,6 @@
 # Configuring Your Organization and Workspaces
 
-We need to sign up for Terraform Cloud and create an organization and workspace for the new application. We can use the process to take a brief tour and get our local Terraform client configured to use TFC.
+We need to sign up for an HCP Account and then Terraform Cloud and create an organization and workspace for the new application. We can use the process to take a brief tour and get our local Terraform client configured to use TFC.
 
 ## Demos
 
@@ -10,15 +10,15 @@ We need to sign up for Terraform Cloud and create an organization and workspace 
 
 ## Signing up a new organization for Terraform Cloud
 
-Let's start with setting up a Terraform Cloud Account. We recommend not using any production Terraform Cloud accounts for this course.
+Let's start with setting up an HCP Account and use that to connect to Terraform Cloud. We recommend not using any production Terraform Cloud accounts for this course.
 
-Click on the link below and create an account if you do not already have one. Please be sure to validate your email address. This is required to create
-an organization.
+Click on the link below and create an account if you do not already have one. Please be sure to validate your email address.
 
-[https://app.terraform.io/](https://app.terraform.io/)
+[https://portal.cloud.hashicorp.com/sign-up](https://portal.cloud.hashicorp.com/sign-up)
 
-After you have validated your email you will be given the option to create an organization. The organization name needs to be unique so be creative.
-You can now click on "Workspaces". Since this is a new organization, you shouldn't have any in the list yet.
+After you have validated your email you will be taken to the HCP portal. From there, you can click on the Terraform Cloud service and link your HCP account to Terraform Cloud. Then you can create an organization.
+
+The organization name needs to be unique so be creative.
 
 ## Configuring the Terraform CLI to work with TFC
 
@@ -28,8 +28,9 @@ Now we are going to create an API token for Terraform Cloud. From your terminal 
 terraform login
 ```
 
-When prompted, enter `yes` to proceed. Click on the URL provided. This will forward you to Terraform Cloud to create an API token. Copy the token string
-and paste that at the "Token for app.terraform.io" prompt.
+When prompted, enter `yes` to proceed. Click on the URL provided. This will forward you to Terraform Cloud to create an API token. 
+
+Copy the token string and paste that at the "Token for app.terraform.io" prompt.
 
 If the token was entered successfully you should see the following:
 
